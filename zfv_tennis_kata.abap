@@ -69,7 +69,6 @@ CLASS lcl_tennis_game DEFINITION.
           mv_2nd_player TYPE string,
           mv_score      TYPE string.
 
-
 ENDCLASS.
 
 CLASS lcl_tennis_game IMPLEMENTATION.
@@ -106,7 +105,8 @@ CLASS ltc_tennis_game DEFINITION FOR TESTING
   PUBLIC SECTION.
 
     METHODS: new_game_yields_love_all FOR TESTING,
-             player_1_wins_1st_pt_15_love FOR TESTING.
+             player_1_wins_1st_pt_15_love FOR TESTING,
+             both_players_win_once_15_all FOR TESTING.
 
 
 ENDCLASS.
@@ -146,6 +146,21 @@ CLASS ltc_tennis_game IMPLEMENTATION.
 
     "assert
     cl_abap_unit_assert=>assert_equals( msg = 'Score should be \"Fifteen, Love\"' exp = 'Fifteen, Love' act = lv_score ).
+
+  ENDMETHOD.
+
+  METHOD both_players_win_once_15_all.
+
+    "arrange
+    DATA(lo_tennis_game) = NEW lcl_tennis_game( iv_1st_player = 'Player One' iv_2nd_player = 'Player Two' ).
+    lo_tennis_game->lif_tennis_game~point_won_by( iv_player_name = 'Player One' ).
+    lo_tennis_game->lif_tennis_game~point_won_by( iv_player_name = 'Player Two' ).
+
+    "act
+    DATA(lv_score) = lo_tennis_game->lif_tennis_game~get_score( ).
+
+    "assert
+    cl_abap_unit_assert=>assert_equals( msg = 'Score should be \"Fifteen All\"' exp = 'Fifteen All' act = lv_score ).
 
   ENDMETHOD.
 
