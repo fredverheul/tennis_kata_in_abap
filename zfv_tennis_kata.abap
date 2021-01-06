@@ -82,6 +82,8 @@ CLASS lcl_tennis_game IMPLEMENTATION.
 
     IF iv_player_name = mv_1st_player.
       mv_score = 'Fifteen, Love'.
+    ELSEIF iv_player_name = mv_2nd_player.
+      mv_score = 'Fifteen All'.
     ENDIF.
 
   ENDMETHOD.
