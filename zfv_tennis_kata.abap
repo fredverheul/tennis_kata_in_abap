@@ -60,6 +60,13 @@ CLASS lcl_tennis_game DEFINITION.
   PUBLIC SECTION.
     INTERFACES: lif_tennis_game.
 
+    METHODS: constructor IMPORTING iv_1st_player TYPE string
+                                   iv_2nd_player TYPE string.
+
+  PRIVATE SECTION.
+
+    DATA: mv_1st_player TYPE string,
+          mv_2nd_player TYPE string.
 
 ENDCLASS.
 
@@ -71,6 +78,13 @@ CLASS lcl_tennis_game IMPLEMENTATION.
   ENDMETHOD.
 
   METHOD lif_tennis_game~point_won_by.
+
+  ENDMETHOD.
+
+  METHOD constructor.
+
+    mv_1st_player = iv_1st_player.
+    mv_2nd_player = iv_2nd_player.
 
   ENDMETHOD.
 
@@ -95,7 +109,7 @@ CLASS ltc_tennis_game IMPLEMENTATION.
   METHOD new_game_yields_love_all.
 
     "arrange
-    DATA(lo_tennis_game) = NEW lcl_tennis_game( ).
+    DATA(lo_tennis_game) = NEW lcl_tennis_game( iv_1st_player = 'dummy1' iv_2nd_player = 'dummy2' ).
 
     "act + assert
     cl_abap_unit_assert=>assert_equals( msg = 'New game should result in Love all' exp = 'Love all' act = lo_tennis_game->lif_tennis_game~get_score( ) ).
@@ -117,7 +131,7 @@ CLASS ltc_tennis_game IMPLEMENTATION.
   METHOD player_1_wins_1st_pt_15_love.
 
     "arrange
-    DATA(lo_tennis_game) = NEW lcl_tennis_game( ).
+    DATA(lo_tennis_game) = NEW lcl_tennis_game( iv_1st_player = 'Player One' iv_2nd_player = 'dummy2' ).
     lo_tennis_game->lif_tennis_game~point_won_by( iv_player_name = 'Player One' ).
 
     "act
