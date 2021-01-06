@@ -67,6 +67,7 @@ CLASS lcl_tennis_game IMPLEMENTATION.
 
 
   METHOD lif_tennis_game~get_score.
+    rv_score = 'Love all'.
   ENDMETHOD.
 
   METHOD lif_tennis_game~point_won_by.
