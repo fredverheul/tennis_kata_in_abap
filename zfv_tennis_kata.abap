@@ -66,7 +66,9 @@ CLASS lcl_tennis_game DEFINITION.
   PRIVATE SECTION.
 
     DATA: mv_1st_player TYPE string,
-          mv_2nd_player TYPE string.
+          mv_2nd_player TYPE string,
+          mv_score      TYPE string.
+
 
 ENDCLASS.
 
@@ -74,10 +76,14 @@ CLASS lcl_tennis_game IMPLEMENTATION.
 
 
   METHOD lif_tennis_game~get_score.
-    rv_score = 'Love all'.
+    rv_score = mv_score.
   ENDMETHOD.
 
   METHOD lif_tennis_game~point_won_by.
+
+    IF iv_player_name = mv_1st_player.
+      mv_score = 'Fifteen, Love'.
+    ENDIF.
 
   ENDMETHOD.
 
@@ -85,6 +91,7 @@ CLASS lcl_tennis_game IMPLEMENTATION.
 
     mv_1st_player = iv_1st_player.
     mv_2nd_player = iv_2nd_player.
+    mv_score = 'Love all'.
 
   ENDMETHOD.
 
