@@ -84,7 +84,8 @@ CLASS ltc_tennis_game DEFINITION FOR TESTING
 
   PUBLIC SECTION.
 
-    METHODS: new_game_yields_love_all FOR TESTING.
+    METHODS: new_game_yields_love_all FOR TESTING,
+             player_1_wins_1st_pt_15_love FOR TESTING.
 
 
 ENDCLASS.
@@ -112,5 +113,19 @@ CLASS ltc_tennis_game IMPLEMENTATION.
 
 
 
+
+  METHOD player_1_wins_1st_pt_15_love.
+
+    "arrange
+    DATA(lo_tennis_game) = NEW lcl_tennis_game( ).
+    lo_tennis_game->lif_tennis_game~point_won_by( iv_player_name = 'Player One' ).
+
+    "act
+    DATA(lv_score) = lo_tennis_game->lif_tennis_game~get_score( ).
+
+    "assert
+    cl_abap_unit_assert=>assert_equals( msg = 'Score should be \"Fifteen, Love\"' exp = 'Fifteen, Love' act = lv_score ).
+
+  ENDMETHOD.
 
 ENDCLASS.
