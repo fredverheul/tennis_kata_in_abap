@@ -65,9 +65,10 @@ CLASS lcl_tennis_game DEFINITION.
 
   PRIVATE SECTION.
 
-    DATA: mv_1st_player TYPE string,
-          mv_2nd_player TYPE string,
-          mv_score      TYPE string.
+    DATA: mv_1st_player   TYPE string,
+          mv_2nd_player   TYPE string,
+          mv_1st_pl_score TYPE i,
+          mv_2nd_pl_score TYPE i.
 
 ENDCLASS.
 
@@ -75,15 +76,29 @@ CLASS lcl_tennis_game IMPLEMENTATION.
 
 
   METHOD lif_tennis_game~get_score.
-    rv_score = mv_score.
+
+    IF mv_1st_pl_score = 0.
+      rv_score = 'Love'.
+    ELSEIF mv_1st_pl_score = 1.
+      rv_score = 'Fifteen'.
+    ENDIF.
+
+    IF mv_2nd_pl_score = mv_1st_pl_score.
+      rv_score = rv_score && ` All`.
+    ELSEIF mv_2nd_pl_score = 0.
+      rv_score = rv_score && `, Love`.
+    ELSEIF mv_2nd_pl_score = 1.
+      rv_score = rv_score && `, Fifteen`.
+    ENDIF.
+
   ENDMETHOD.
 
   METHOD lif_tennis_game~point_won_by.
 
     IF iv_player_name = mv_1st_player.
-      mv_score = 'Fifteen, Love'.
+      ADD 1 TO mv_1st_pl_score.
     ELSEIF iv_player_name = mv_2nd_player.
-      mv_score = 'Fifteen All'.
+      ADD 1 TO mv_2nd_pl_score.
     ENDIF.
 
   ENDMETHOD.
@@ -92,7 +107,6 @@ CLASS lcl_tennis_game IMPLEMENTATION.
 
     mv_1st_player = iv_1st_player.
     mv_2nd_player = iv_2nd_player.
-    mv_score = 'Love all'.
 
   ENDMETHOD.
 
@@ -122,21 +136,17 @@ CLASS ltc_tennis_game IMPLEMENTATION.
     DATA(lo_tennis_game) = NEW lcl_tennis_game( iv_1st_player = 'dummy1' iv_2nd_player = 'dummy2' ).
 
     "act + assert
-    cl_abap_unit_assert=>assert_equals( msg = 'New game should result in Love all' exp = 'Love all' act = lo_tennis_game->lif_tennis_game~get_score( ) ).
+    cl_abap_unit_assert=>assert_equals( msg = 'New game should result in Love all' exp = 'Love All' act = lo_tennis_game->lif_tennis_game~get_score( ) ).
 
   ENDMETHOD.
 
 *& Other test cases (not fully worked out, just to make sure you understand the requirements
 
-*& Player one wins first point: score = 'Fifteen, Love'.
 *& Player two wins first 2 points: score = 'Love, Thirty'.
 *& Both players win 2 points: score = 'Thirty all'.
 *& Both players win >= 3 points: score = 'Deuce'
 *& After deuce, player one wins the next point: score = 'Advantage' + && <name_of_player_one>
 *& Player two wins the game: score = <name_of_player_two> && 'wins!'
-
-
-
 
   METHOD player_1_wins_1st_pt_15_love.
 
