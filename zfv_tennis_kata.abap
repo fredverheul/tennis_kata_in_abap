@@ -123,7 +123,8 @@ CLASS ltc_tennis_game DEFINITION FOR TESTING
     METHODS: new_game_yields_love_all FOR TESTING,
              player_1_wins_1st_pt_15_love FOR TESTING,
              both_players_win_once_15_all FOR TESTING,
-             player_2_wins_1st_pt_love_15 FOR TESTING.
+             player_2_wins_1st_pt_love_15 FOR TESTING,
+             player_1_wins_2_pts_30_love FOR TESTING.
 
 
 ENDCLASS.
@@ -188,6 +189,21 @@ CLASS ltc_tennis_game IMPLEMENTATION.
 
     "assert
     cl_abap_unit_assert=>assert_equals( msg = 'Score should be \"Love, Fifteen\"' exp = 'Love, Fifteen' act = lv_score ).
+
+  ENDMETHOD.
+
+  METHOD player_1_wins_2_pts_30_love.
+
+    "arrange
+    DATA(lo_tennis_game) = NEW lcl_tennis_game( iv_1st_player = 'Player One' iv_2nd_player = 'dummy2' ).
+    lo_tennis_game->lif_tennis_game~point_won_by( iv_player_name = 'Player One' ).
+    lo_tennis_game->lif_tennis_game~point_won_by( iv_player_name = 'Player One' ).
+
+    "act
+    DATA(lv_score) = lo_tennis_game->lif_tennis_game~get_score( ).
+
+    "assert
+    cl_abap_unit_assert=>assert_equals( msg = 'Score should be \"Thirty, Love\"' exp = 'Thirty, Love' act = lv_score ).
 
   ENDMETHOD.
 
