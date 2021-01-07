@@ -77,13 +77,15 @@ CLASS lcl_tennis_game IMPLEMENTATION.
 
   METHOD lif_tennis_game~get_score.
 
-    IF mv_1st_pl_score = 0.
-      rv_score = 'Love'.
-    ELSEIF mv_1st_pl_score = 1.
-      rv_score = 'Fifteen'.
-    ELSEIF mv_1st_pl_score = 2.
-      rv_score = 'Thirty'.
-    ENDIF.
+    CASE mv_1st_pl_score.
+      WHEN 0.
+        rv_score = 'Love'.
+      WHEN 1.
+        rv_score = 'Fifteen'.
+      WHEN 2.
+        rv_score = 'Thirty'.
+      WHEN OTHERS.
+    ENDCASE.
 
     IF mv_2nd_pl_score = mv_1st_pl_score.
       rv_score = rv_score && ` All`.
