@@ -81,6 +81,8 @@ CLASS lcl_tennis_game IMPLEMENTATION.
       rv_score = 'Love'.
     ELSEIF mv_1st_pl_score = 1.
       rv_score = 'Fifteen'.
+    ELSEIF mv_1st_pl_score = 2.
+      rv_score = 'Thirty'.
     ENDIF.
 
     IF mv_2nd_pl_score = mv_1st_pl_score.
